@@ -1,9 +1,12 @@
 //TILES
 var Tile = function (tile) {
+  this.original = tile;
   this.col = tile.attributes["data-col"].value;
   this.row = tile.attributes["data-row"].value;
   this.val = tile.attributes["data-val"].value;
-  this.original = tile;
+  this.colNum = Number(this.col[1]);
+  this.rowNum = Number(this.row[1]);
+  // this.nextRow = this.rowNum + 1;
 };
 
 
