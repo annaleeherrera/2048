@@ -1,6 +1,6 @@
 //HELPER- add array method to get random elements from arrays
 Array.prototype.randomElement = function () {
-  return this[Math.floor(Math.random() * this.length)]
+  return this[Math.floor(Math.random() * this.length)];
 };
 
 //TILES
@@ -28,11 +28,11 @@ Board.prototype.update = function (newArray) {
 Board.prototype.isFull = function () {
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
-      if (tile == 0) {
+      if (tile === 0) {
         return false;
       } else {
         return true;
-      };
+      }
     });
   });
 };
@@ -51,12 +51,12 @@ Board.prototype.placeRandomTile = function () {
       //check at that spot to see if there is a tile already
       if ((this.contents[randRow][randCol]) !== 0) {
         var tile = new Tile(randRow, randCol, randVal);
-        this.placeTile(tile);    
+        this.placeTile(tile);
       } else {
         findEmptyLocation();
-      };
+      }
     };
-  };
+  }
 };
 
 //places a tile onto the board
@@ -76,10 +76,10 @@ Board.prototype.updateDom = function () {
   //then add updated tiles
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
-      if (tile == 0) {
+      if (tile === 0) {
       } else {
         gameboard.append('<div class="tile" data-row=' + tile.row + ', data-col=' + tile.col + ' data-val=' + tile.val +'>'+ tile.valNum + '</div>');
-      };
+      }
       });
     });
 };
@@ -105,7 +105,7 @@ Game.prototype.moveTiles = function(direction) {
     case 39: //right
       console.log("right");
       break;
-  };
+  }
 };
 
 $(document).ready(function() {
@@ -119,6 +119,6 @@ $(document).ready(function() {
       var tiles = $('.tile');
       game.moveTiles(event.which);
       game.board.placeRandomTile();
-    };
+    }
   });
 });
