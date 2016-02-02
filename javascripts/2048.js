@@ -39,26 +39,30 @@ Board.prototype.isFull = function () {
   return full;
 };
 
+
+
+Board.prototype.findEmptyLocation = function () {
+  var columns = [0, 1, 2, 3];
+  var rows = [0, 1, 2, 3];
+  var randRow = rows.randomElement();
+  var randCol = columns.randomElement();
+  var randVal = ['2','4'][Math.round(Math.random())];
+  if ((this.contents[randRow][randCol]) !== 0) {
+    var tile = new Tile(randRow, randCol, randVal);
+    return tile;
+  } else {
+    this.findEmptyLocation();
+  };
+};
+
 //add a new tile in a random unoccupied spot
 Board.prototype.placeRandomTile = function () {
   //if the board is full, don't add another tile.
   if (this.isFull()) {
   } else {
-    var findEmptyLocation = function () {
-      var columns = [0, 1, 2, 3];
-      var rows = [0, 1, 2, 3];
-      var randRow = rows.randomElement();
-      var randCol = columns.randomElement();
-      var randVal = ['2','4'][Math.round(Math.random())];
-      //check at that spot to see if there is a tile already
-      if ((this.contents[randRow][randCol]) !== 0) {
-        var tile = new Tile(randRow, randCol, randVal);
-        this.placeTile(tile);
-      } else {
-        findEmptyLocation();
-      }
-    };
-  }
+    newTile = this.findEmptyLocation();
+    placeTile(newTile);
+  };
 };
 
 //places a tile onto the board
@@ -82,7 +86,7 @@ Board.prototype.updateDom = function () {
       } else {
         gameboard.append('<div class="tile" data-row=' + tile.row + ', data-col=' + tile.col + ' data-val=' + tile.val +'>'+ tile.valNum + '</div>');
       }
-      });
+    });
   });
 };
 
