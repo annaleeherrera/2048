@@ -1,9 +1,9 @@
 //TILES
 var Tile = function (tile) {
   this.original = tile;
-  this.col = tile.attributes["data-col"].value;
-  this.row = tile.attributes["data-row"].value;
-  this.val = tile.attributes["data-val"].value;
+  this.col = tile.attributes["data-col"].value; //ie "c1"
+  this.row = tile.attributes["data-row"].value; //ie "r1"
+  this.val = tile.attributes["data-val"].value; //ie "4"
   this.colNum = Number(this.col[1]);
   this.rowNum = Number(this.row[1]);
   this.valNum = Number(this.val);
@@ -39,19 +39,14 @@ Board.prototype.updateDom = function () {
   tiles.remove();
   //then add updated tiles
   (this.contents).forEach(function (row) {
-    row.forEach(function (index) {
-      if (index == 0) {
+    row.forEach(function (tile) {
+      if (tile == 0) {
         break;
       } else {
-        gameboard.append("<div></div>");
-      }
-
+        gameboard.append('<div class="tile" data-row=' + tile.row + ', data-col=' + tile.col + ' data-val=' + tile.val +'>'+ tile.valNum + '</div>');
+      };
+      });
     });
-  });
-  // game.append()
-
-
-
 };
 
 
