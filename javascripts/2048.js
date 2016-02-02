@@ -25,14 +25,15 @@ Game.prototype.moveTiles = function(tiles, direction) {
     case 39: //right
       for (var i = 0; i < tiles.length; i++) {
         var col = get_col(tiles[i]);
-        if (position == 3) {
-          break;
-        } else if{
-          tiles[]
-        }
-        tiles[i].attr("data-col", "c3");
+      //   if (position == 3) {
+      //     break;
+      //   } else if{
+      //     tiles[]
+      //   }
+      //   tiles[i].attr("data-col", "c3");
       }
-      break;
+      // break;
+      //$('tiles'[data-col="c3"]')
   }
 };
 
