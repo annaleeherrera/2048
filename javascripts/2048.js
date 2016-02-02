@@ -6,13 +6,57 @@ var Tile = function (tile) {
   this.val = tile.attributes["data-val"].value;
   this.colNum = Number(this.col[1]);
   this.rowNum = Number(this.row[1]);
-  // this.nextRow = this.rowNum + 1;
+};
+
+//row and col refer to positions in the board array
+//this will add a tile to the board
+Tile.prototype.makeNew = function (row, col, value) {
+
+};
+
+Tile.prototype.newRandom = function () {
+  //random
+};
+
+
+//BOARD
+var Board = function (array) {
+  this.contents = array;
+};
+
+//board updates itself based on movement of tiles
+Board.prototype.update = function (newArray) {
+  this.contents = newArray;
+};
+
+//board talks to DOM based on what it's storing
+Board.prototype.updateDom = function () {
+  //makes it so everything in the board is represented by a line of html
+  //first remove old tiles
+  var game= $("#gameboard");
+  var tiles = game.children(".tile");
+  tiles.remove();
+  //then add updated tiles
+  (this.contents).forEach(function (row) {
+    row.forEach(function (index) {
+      if (index == 0) {
+        break;
+      } else {
+        game.append("<div></div>");
+      }
+
+    });
+  });
+  // game.append()
+
+
+
 };
 
 
 ///GAME
 var Game = function() {
-  // Game logic and initialization here
+  var board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
 };
 
 Game.prototype.makeTiles = function (tiles) {
@@ -23,6 +67,17 @@ Game.prototype.makeTiles = function (tiles) {
   };
   return tilesArray;
 };
+
+
+// Game.prototype.makeTiles = function (tiles) {
+//   var tilesArray = [];
+//   for (i = 0; i < tiles.length; i++) {
+//       var tile = new Tile(tiles[i]);
+//       tilesArray.push(tile);
+//   };
+//   return tilesArray;
+// };
+
 
 Game.prototype.moveTiles = function(tilesArray, direction) {
 
@@ -59,7 +114,6 @@ $(document).ready(function() {
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
-      var tilesArray = game.makeTiles(tiles);
       game.moveTiles(tilesArray, event.which);
     };
   });
