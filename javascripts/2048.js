@@ -1,23 +1,67 @@
-var Game = function() {
-  // Game logic and initialization here
+//TILES
+var Tile = function (tile) {
+  this.original = tile;
+  this.col = tile.attributes["data-col"].value;
+  this.row = tile.attributes["data-row"].value;
+  this.val = tile.attributes["data-val"].value;
+  this.colNum = Number(this.col[1]);
+  this.rowNum = Number(this.row[1]);
+  this.nextTile = function (direction) {
+
+  }
+
 };
 
-Game.prototype.moveTile = function(tile, direction) {
-  // Game method here
+
+//BOARD
+var Board = function (array) {
+  this.contents = array;
+};
+
+Board.prototype.update = function (newArray) {
+  this.contents = newArray;
+};
+
+
+///GAME
+var Game = function() {
+  var board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
+  console.log(board.contents);
+};
+
+Game.prototype.makeTiles = function (tiles) {
+  var tilesArray = [];
+  for (i = 0; i < tiles.length; i++) {
+      var tile = new Tile(tiles[i]);
+      tilesArray.push(tile);
+  };
+  return tilesArray;
+};
+
+Game.prototype.moveTiles = function(tilesArray, direction) {
+
   switch(direction) {
     case 38: //up
-      console.log('up');
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-row", "r0");
+    });
       break;
     case 40: //down
-      console.log('down');
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-row", "r3");
+    });
       break;
     case 37: //left
-      console.log('left');
+      tilesArray.forEach(function (tile) {
+        tile.original.setAttribute("data-col", "c0");
+      });
       break;
     case 39: //right
-      console.log('right');
-      break;
-  }
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-col", "c3");
+    });
+    break;
+  };
 };
 
 $(document).ready(function() {
@@ -28,9 +72,9 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
-      var tile = $('.tile');
-      
-      game.moveTile(tile, event.which);
-    }
+      var tiles = $('.tile');
+      var tilesArray = game.makeTiles(tiles);
+      game.moveTiles(tilesArray, event.which);
+    };
   });
 });
