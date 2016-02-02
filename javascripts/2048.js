@@ -2,20 +2,32 @@ var Game = function() {
   // Game logic and initialization here
 };
 
-Game.prototype.moveTile = function(tile, direction) {
-  // Game method here
+Game.prototype.moveTiles = function(tiles, direction) {
+
+  var get_col = function (tile) {
+
+  };
+
   switch(direction) {
     case 38: //up
-      console.log('up');
+      tiles.attr("data-row", "r0");
       break;
     case 40: //down
-      console.log('down');
+      tiles.attr("data-row", "r3");
       break;
     case 37: //left
-      console.log('left');
+      tiles.attr("data-col", "c0");
       break;
     case 39: //right
-      console.log('right');
+      for (var i = 0; i < tiles.length; i++) {
+        var position = tiles[i].attributes["data-col"].value[1];
+        if (position == 3) {
+          break;
+        } else if{
+          tiles[]
+        }
+        tiles[i].attr("data-col", "c3");
+      }
       break;
   }
 };
@@ -28,9 +40,9 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
-      var tile = $('.tile');
-      
-      game.moveTile(tile, event.which);
+      var tiles = $('.tile');
+
+      game.moveTiles(tiles, event.which);
     }
   });
 });
