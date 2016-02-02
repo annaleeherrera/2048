@@ -25,10 +25,14 @@ Game.prototype.moveTiles = function(tilesArray, direction) {
 
   switch(direction) {
     case 38: //up
-      // tiles.attr("data-row", "r0");
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-row", "r0");
+    });
       break;
     case 40: //down
-      // tiles.attr("data-row", "r3");
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-row", "r3");
+    });
       break;
     case 37: //left
       tilesArray.forEach(function (tile) {
@@ -36,9 +40,9 @@ Game.prototype.moveTiles = function(tilesArray, direction) {
       });
       break;
     case 39: //right
-      // for (var i = 0; i < tiles.length; i++) {
-      //   console.log(tileToRight(tiles[i]));
-      // }
+    tilesArray.forEach(function (tile) {
+      tile.original.setAttribute("data-col", "c3");
+    });
     break;
   };
 };
