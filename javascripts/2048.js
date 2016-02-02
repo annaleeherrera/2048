@@ -33,8 +33,8 @@ Board.prototype.update = function (newArray) {
 Board.prototype.updateDom = function () {
   //makes it so everything in the board is represented by a line of html
   //first remove old tiles
-  var game= $("#gameboard");
-  var tiles = game.children(".tile");
+  var gameboard= $("#gameboard");
+  var tiles = gameboard.children(".tile");
   tiles.remove();
   //then add updated tiles
   (this.contents).forEach(function (row) {
@@ -42,7 +42,8 @@ Board.prototype.updateDom = function () {
       if (index == 0) {
         break;
       } else {
-        game.append("<div></div>");
+        
+        gameboard.append("<div></div>");
       }
 
     });
