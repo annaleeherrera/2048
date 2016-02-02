@@ -29,7 +29,7 @@ Board.prototype.isFull = function () {
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
       if (tile == 0) {
-        break;
+        return false;
       } else {
         return true;
       };
@@ -38,9 +38,9 @@ Board.prototype.isFull = function () {
 };
 
 //add a new tile in a random unoccupied spot
-Board.prototype.newRandomTile = function () {
+Board.prototype.placeRandomTile = function () {
   //if the board is full, don't add another tile.
-  if this.isFull() {
+  if (this.isFull()) {
     break;
   } else {
     var findEmptyLocation = function () {
@@ -58,12 +58,14 @@ Board.prototype.newRandomTile = function () {
       };
     };
   };
+  this.placeTile(tile);
 };
 
 //places a tile onto the board
 //takes tile object as parameter
 Board.prototype.placeTile = function (tile) {
   this[tile.rowNum][tile.colNum] = tile;
+  this.updateDom();
 };
 
 //board talks to DOM based on what it's storing
@@ -88,10 +90,10 @@ Board.prototype.updateDom = function () {
 
 ///GAME
 var Game = function() {
-  var board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
+  this.board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
 };
 
-Game.prototype.moveTiles = function(tilesArray, direction) {
+Game.prototype.moveTiles = function(direction) {
 
   switch(direction) {
     case 38: //up
@@ -126,7 +128,8 @@ $(document).ready(function() {
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
-      game.moveTiles(tilesArray, event.which);
+      game.moveTiles(event.which);
+      game.board
     };
   });
 });
