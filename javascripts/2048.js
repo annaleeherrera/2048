@@ -26,15 +26,17 @@ Board.prototype.update = function (newArray) {
 };
 
 Board.prototype.isFull = function () {
+  var full = false;
   (this.contents).forEach(function (row) {
-    row.forEach(function (tile) {
-      if (tile == 0) {
-        return false;
+    for (var i = 0; i < row.length; i++) {
+      if (row[i] == 0) {
+        full = false;
       } else {
-        return true;
+        full = true;
       };
-    });
+    };
   });
+  return full;
 };
 
 //add a new tile in a random unoccupied spot
@@ -51,7 +53,7 @@ Board.prototype.placeRandomTile = function () {
       //check at that spot to see if there is a tile already
       if ((this.contents[randRow][randCol]) !== 0) {
         var tile = new Tile(randRow, randCol, randVal);
-        this.placeTile(tile);    
+        this.placeTile(tile);
       } else {
         findEmptyLocation();
       };
