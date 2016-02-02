@@ -1,16 +1,26 @@
+//TILES
+var Tile = function (tile) {
+  this.col = tile.attributes["data-col"].value;
+  this.row = tile.attributes["data-row"].value;
+  this.val = tile.attributes["data-val"].value;
+};
+
+
+///GAME
 var Game = function() {
   // Game logic and initialization here
 };
 
+Game.prototype.makeTiles = function (tiles) {
+  var tilesArray = [];
+  for (i = 0; i < tiles.length; i++) {
+      var tile = new Tile(tiles[i]);
+      tilesArray.push(tile);
+  };
+  return tilesArray;
+};
+
 Game.prototype.moveTiles = function(tiles, direction) {
-
-  var get_col = function (tile) {
-    return tile.attributes["data-col"].value[1];
-  };
-
-  var get_row = function (tile) {
-    return tile.attributes["data-row"].value[1];
-  };
 
   switch(direction) {
     case 38: //up
@@ -20,21 +30,18 @@ Game.prototype.moveTiles = function(tiles, direction) {
       tiles.attr("data-row", "r3");
       break;
     case 37: //left
-      tiles.attr("data-col", "c0");
+      // tiles.attr("data-col", "c0");
+      for (var i = 0; i < tiles.length; i++) {
+        console.log(tileToLeft(tiles[i]));
+      }
+
       break;
     case 39: //right
       for (var i = 0; i < tiles.length; i++) {
-        var col = get_col(tiles[i]);
-      //   if (position == 3) {
-      //     break;
-      //   } else if{
-      //     tiles[]
-      //   }
-      //   tiles[i].attr("data-col", "c3");
+        console.log(tileToRight(tiles[i]));
       }
-      // break;
-      //$('tiles'[data-col="c3"]')
-  }
+    break;
+  };
 };
 
 $(document).ready(function() {
@@ -46,8 +53,8 @@ $(document).ready(function() {
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
-
-      game.moveTiles(tiles, event.which);
-    }
+      var tilesArray = game.makeTiles(tiles);
+      game.moveTiles(tilesArray, event.which);
+    };
   });
 });
