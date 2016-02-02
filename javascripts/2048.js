@@ -1,22 +1,17 @@
+//HELPER- add array method to get random elements from arrays
+Array.prototype.randomElement = function () {
+  return this[Math.floor(Math.random() * this.length)]
+};
+
 //TILES
-var Tile = function (tile) {
-  this.original = tile;
-  this.col = tile.attributes["data-col"].value; //ie "c1"
-  this.row = tile.attributes["data-row"].value; //ie "r1"
-  this.val = tile.attributes["data-val"].value; //ie "4"
-  this.colNum = Number(this.col[1]);
-  this.rowNum = Number(this.row[1]);
-  this.valNum = Number(this.val);
-};
-
-//row and col refer to positions in the board array
-//this will add a tile to the board
-Tile.prototype.makeNew = function (row, col, value) {
-
-};
-
-Tile.prototype.newRandom = function () {
-  //random
+//arguments to be passed in to create tiles are strings
+var Tile = function (row, col, val) {
+  this.colNum = col;
+  this.rowNum = row;
+  this.valNum = val;
+  this.col = col.toString; //ie "c1"
+  this.row = row.toString;  //ie "r1"
+  this.val = val.toString; //ie "4"
 };
 
 
@@ -28,6 +23,47 @@ var Board = function (array) {
 //board updates itself based on movement of tiles
 Board.prototype.update = function (newArray) {
   this.contents = newArray;
+};
+
+Board.prototype.isFull = function () {
+  (this.contents).forEach(function (row) {
+    row.forEach(function (tile) {
+      if (tile == 0) {
+        break;
+      } else {
+        return true;
+      };
+    });
+  });
+};
+
+//add a new tile in a random unoccupied spot
+Board.prototype.newRandomTile = function () {
+  //if the board is full, don't add another tile.
+  if this.isFull() {
+    break;
+  } else {
+    var findEmptyLocation = function () {
+      var columns = [0, 1, 2, 3];
+      var rows = [0, 1, 2, 3];
+      var randRow = rows.randomElement();
+      var randCol = columns.randomElement();
+      var randVal = ['2','4'][Math.round(Math.random())];
+      //check at that spot to see if there is a tile already
+      if ((this.contents[randRow][randCol]) !== 0) {
+        var tile = new Tile(randRow, randCol, randVal);
+        return tile;
+      } else {
+        findEmptyLocation();
+      };
+    };
+  };
+};
+
+//places a tile onto the board
+//takes tile object as parameter
+Board.prototype.placeTile = function (tile) {
+  this[tile.rowNum][tile.colNum] = tile;
 };
 
 //board talks to DOM based on what it's storing
@@ -54,17 +90,6 @@ Board.prototype.updateDom = function () {
 var Game = function() {
   var board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
 };
-
-
-// Game.prototype.makeTiles = function (tiles) {
-//   var tilesArray = [];
-//   for (i = 0; i < tiles.length; i++) {
-//       var tile = new Tile(tiles[i]);
-//       tilesArray.push(tile);
-//   };
-//   return tilesArray;
-// };
-
 
 Game.prototype.moveTiles = function(tilesArray, direction) {
 
