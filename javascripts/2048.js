@@ -3,6 +3,7 @@ var Tile = function (tile) {
   this.col = tile.attributes["data-col"].value;
   this.row = tile.attributes["data-row"].value;
   this.val = tile.attributes["data-val"].value;
+  this.original = tile;
 };
 
 
@@ -20,26 +21,24 @@ Game.prototype.makeTiles = function (tiles) {
   return tilesArray;
 };
 
-Game.prototype.moveTiles = function(tiles, direction) {
+Game.prototype.moveTiles = function(tilesArray, direction) {
 
   switch(direction) {
     case 38: //up
-      tiles.attr("data-row", "r0");
+      // tiles.attr("data-row", "r0");
       break;
     case 40: //down
-      tiles.attr("data-row", "r3");
+      // tiles.attr("data-row", "r3");
       break;
     case 37: //left
-      // tiles.attr("data-col", "c0");
-      for (var i = 0; i < tiles.length; i++) {
-        console.log(tileToLeft(tiles[i]));
-      }
-
+      tilesArray.forEach(function (tile) {
+        tile.original.setAttribute("data-col", "c0");
+      });
       break;
     case 39: //right
-      for (var i = 0; i < tiles.length; i++) {
-        console.log(tileToRight(tiles[i]));
-      }
+      // for (var i = 0; i < tiles.length; i++) {
+      //   console.log(tileToRight(tiles[i]));
+      // }
     break;
   };
 };
