@@ -5,7 +5,11 @@ var Game = function() {
 Game.prototype.moveTiles = function(tiles, direction) {
 
   var get_col = function (tile) {
+    return tile.attributes["data-col"].value[1];
+  };
 
+  var get_row = function (tile) {
+    return tile.attributes["data-row"].value[1];
   };
 
   switch(direction) {
@@ -20,7 +24,7 @@ Game.prototype.moveTiles = function(tiles, direction) {
       break;
     case 39: //right
       for (var i = 0; i < tiles.length; i++) {
-        var position = tiles[i].attributes["data-col"].value[1];
+        var col = get_col(tiles[i]);
         if (position == 3) {
           break;
         } else if{
