@@ -6,6 +6,7 @@ var Tile = function (tile) {
   this.val = tile.attributes["data-val"].value;
   this.colNum = Number(this.col[1]);
   this.rowNum = Number(this.row[1]);
+  this.valNum = Number(this.val);
 };
 
 //row and col refer to positions in the board array
@@ -42,7 +43,6 @@ Board.prototype.updateDom = function () {
       if (index == 0) {
         break;
       } else {
-        
         gameboard.append("<div></div>");
       }
 
@@ -58,15 +58,6 @@ Board.prototype.updateDom = function () {
 ///GAME
 var Game = function() {
   var board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
-};
-
-Game.prototype.makeTiles = function (tiles) {
-  var tilesArray = [];
-  for (i = 0; i < tiles.length; i++) {
-      var tile = new Tile(tiles[i]);
-      tilesArray.push(tile);
-  };
-  return tilesArray;
 };
 
 
