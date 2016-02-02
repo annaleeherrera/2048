@@ -41,7 +41,6 @@ Board.prototype.isFull = function () {
 Board.prototype.placeRandomTile = function () {
   //if the board is full, don't add another tile.
   if (this.isFull()) {
-    break;
   } else {
     var findEmptyLocation = function () {
       var columns = [0, 1, 2, 3];
@@ -52,13 +51,12 @@ Board.prototype.placeRandomTile = function () {
       //check at that spot to see if there is a tile already
       if ((this.contents[randRow][randCol]) !== 0) {
         var tile = new Tile(randRow, randCol, randVal);
-        return tile;
+        this.placeTile(tile);    
       } else {
         findEmptyLocation();
       };
     };
   };
-  this.placeTile(tile);
 };
 
 //places a tile onto the board
@@ -79,7 +77,6 @@ Board.prototype.updateDom = function () {
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
       if (tile == 0) {
-        break;
       } else {
         gameboard.append('<div class="tile" data-row=' + tile.row + ', data-col=' + tile.col + ' data-val=' + tile.val +'>'+ tile.valNum + '</div>');
       };
@@ -97,25 +94,17 @@ Game.prototype.moveTiles = function(direction) {
 
   switch(direction) {
     case 38: //up
-    tilesArray.forEach(function (tile) {
-      tile.original.setAttribute("data-row", "r0");
-    });
+      console.log("up");
       break;
     case 40: //down
-    tilesArray.forEach(function (tile) {
-      tile.original.setAttribute("data-row", "r3");
-    });
+      console.log("down");
       break;
     case 37: //left
-      tilesArray.forEach(function (tile) {
-        tile.original.setAttribute("data-col", "c0");
-      });
+      console.log("left");
       break;
     case 39: //right
-    tilesArray.forEach(function (tile) {
-      tile.original.setAttribute("data-col", "c3");
-    });
-    break;
+      console.log("right");
+      break;
   };
 };
 
@@ -129,7 +118,7 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
       game.moveTiles(event.which);
-      game.board
+      game.board.placeRandomTile();
     };
   });
 });
