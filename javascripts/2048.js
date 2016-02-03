@@ -95,6 +95,8 @@ Board.prototype.updateDom = function () {
 ///GAME
 var Game = function() {
   this.board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
+  this.board.placeRandomTile();
+  this.board.placeRandomTile();
 };
 
 Game.prototype.moveTiles = function(direction) {
