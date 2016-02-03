@@ -85,7 +85,7 @@ Board.prototype.updateDom = function () {
     row.forEach(function (tile) {
       if (tile === 0) {
       } else {
-        gameboard.append('<div class="tile" data-row=' + tile.row + ', data-col=' + tile.col + ' data-val=' + tile.val +'>'+ tile.valNum + '</div>');
+        gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
       }
     });
   });
