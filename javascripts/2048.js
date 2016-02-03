@@ -14,6 +14,68 @@ var Tile = function (row, col, val) {
   this.val = (this.valNum).toString(); //ie "4"
 };
 
+Tile.prototype.nextSpot = function (direction, board) {
+  var nextTile = null;
+
+  switch(direction) {
+    case 38: //up
+      if (this.rowNum == 0) {
+        return "wallOrDiff";
+      } else if (board.contents[this.rowNum-1][this.colNum] == 0) {
+        return "empty";
+      } else {
+        nextTile = board.contents[this.rowNum-1][this.colNum];
+        if (nextTile.valNum == this.valNum) {
+          return nextTile;
+        } else {
+          return "wallOrDiff";
+        };
+      };
+      break;
+    case 40: //down
+      if (this.rowNum == 3) {
+        return "wallOrDiff";
+      } else if (board.contents[this.rowNum+1][this.colNum] == 0) {
+        return "empty";
+      } else {
+        nextTile = board.contents[this.rowNum+1][this.colNum];
+        if (nextTile.valNum == this.valNum) {
+          return nextTile;
+        } else {
+          return "wallOrDiff";
+        };
+      };
+      break;
+    case 37: //left
+      if (this.colNum == 0) {
+        return "wallOrDiff";
+      } else if (board.contents[this.rowNum][this.colNum-1] == 0) {
+        return "empty";
+      } else {
+        nextTile = board.contents[this.rowNum][this.colNum-1];
+        if (nextTile.valNum == this.valNum) {
+          return nextTile;
+        } else {
+          return "wallOrDiff";
+        };
+      };
+      break;
+    case 39: //right
+      if (this.rowNum == 3) {
+        return "wallOrDiff";
+      } else if (board.contents[this.rowNum][this.colNum+1] == 0) {
+        return "empty";
+      } else {
+        nextTile = board.contents[this.rowNum][this.colNum+1];
+        if (nextTile.valNum == this.valNum) {
+          return nextTile;
+        } else {
+          return "wallOrDiff";
+        };
+      };
+      break;
+    };
+  };
 
 //BOARD
 var Board = function (array) {
@@ -95,24 +157,28 @@ Board.prototype.updateDom = function () {
 ///GAME
 var Game = function() {
   this.board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
+  this.board.placeRandomTile();
+  this.board.placeRandomTile();
 };
 
 Game.prototype.moveTiles = function(direction) {
-
-  switch(direction) {
-    case 38: //up
-      console.log("up");
-      break;
-    case 40: //down
-      console.log("down");
-      break;
-    case 37: //left
-      console.log("left");
-      break;
-    case 39: //right
-      console.log("right");
-      break;
-  }
+  var boardArray = this.contents;
+  for (var i = 0; i < boardArray.length; i++) {
+    for (var j = 0; j < boardArray[i].length; j++) {
+      var current = boardArray[i][j];
+      var next = current.nextSpot(direction, boardArray);
+      if (next == "empty") {
+        next = current;
+        current = 0;
+      } else if (next == "wallOrDiff") {
+        current = current;
+      } else {
+        var newVal = next.val + current.val;
+        next = new Tile(next.row, next.col, newVal);
+        current = 0;
+      };
+    };
+  };
 };
 
 $(document).ready(function() {
