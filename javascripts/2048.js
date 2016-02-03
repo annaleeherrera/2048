@@ -69,7 +69,7 @@ Board.prototype.placeRandomTile = function () {
 //places a tile onto the board
 //takes tile object as parameter
 Board.prototype.placeTile = function (tile) {
-  this[tile.rowNum][tile.colNum] = tile;
+  this.contents[tile.rowNum][tile.colNum] = tile;
   this.updateDom();
 };
 
