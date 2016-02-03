@@ -25,20 +25,20 @@ Board.prototype.update = function (newArray) {
   this.contents = newArray;
 };
 
+
 Board.prototype.isFull = function () {
-  var full = false;
-  (this.contents).forEach(function (row) {
-    for (var i = 0; i < row.length; i++) {
-      if (row[i] == 0) {
+  var full = true;
+  var boardArray = this.contents;
+  for (var i = 0; i < boardArray.length; i++) {
+    for (var j = 0; j < boardArray[i].length; j++) {
+      if (boardArray[i][j] == 0) {
         full = false;
-      } else {
-        full = true;
+        return full;
       };
     };
-  });
+  };
   return full;
 };
-
 
 
 Board.prototype.findEmptyLocation = function () {
@@ -86,7 +86,7 @@ Board.prototype.updateDom = function () {
       if (tile === 0) {
       } else {
         gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
-      }
+      };
     });
   });
 };
