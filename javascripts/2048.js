@@ -48,10 +48,9 @@ Board.prototype.findEmptyLocation = function () {
     randRow = rows.randomElement();
     randCol = columns.randomElement();
     randVal = ['2','4'][Math.round(Math.random())];
-    // if ((this.contents[randRow][randCol]) !== 0) {
-    //   tile = new Tile(randRow, randCol, randVal);
-    // };
-    tile = true;
+    if ((this.contents[randRow][randCol]) === 0) {
+      tile = new Tile(randRow, randCol, randVal);
+    };
   };
   return tile;
 };
