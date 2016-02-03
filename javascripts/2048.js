@@ -9,9 +9,9 @@ var Tile = function (row, col, val) {
   this.colNum = col;
   this.rowNum = row;
   this.valNum = val;
-  this.col = col.toString; //ie "c1"
-  this.row = row.toString;  //ie "r1"
-  this.val = val.toString; //ie "4"
+  this.col = (this.colNum).toString(); //ie "c1"
+  this.row = (this.rowNum).toString();  //ie "r1"
+  this.val = (this.valNum).toString(); //ie "4"
 };
 
 
