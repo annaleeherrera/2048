@@ -49,7 +49,7 @@ Board.prototype.findEmptyLocation = function () {
     randCol = columns.randomElement();
     randVal = ['2','4'][Math.round(Math.random())];
     if ((this.contents[randRow][randCol]) === 0) {
-      tile = new Tile(randRow, randCol, randVal);
+      tile = new Tile(randRow, randCol, Number(randVal));
     };
   };
   return tile;
@@ -78,7 +78,7 @@ Board.prototype.updateDom = function () {
   //makes it so everything in the board is represented by a line of html
   //first remove old tiles
   var gameboard= $("#gameboard");
-  var tiles = gameboard.children(".tile");
+  var tiles = $(".tile");
   tiles.remove();
   //then add updated tiles
   (this.contents).forEach(function (row) {
