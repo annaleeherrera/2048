@@ -162,20 +162,23 @@ var Game = function() {
 };
 
 Game.prototype.moveTiles = function(direction) {
-  var boardArray = this.contents;
+  var board = this.board;
+  var boardArray = board.contents;
   for (var i = 0; i < boardArray.length; i++) {
     for (var j = 0; j < boardArray[i].length; j++) {
       var current = boardArray[i][j];
-      var next = current.nextSpot(direction, boardArray);
-      if (next == "empty") {
-        next = current;
-        current = 0;
-      } else if (next == "wallOrDiff") {
-        current = current;
-      } else {
-        var newVal = next.val + current.val;
-        next = new Tile(next.row, next.col, newVal);
-        current = 0;
+      if (current != 0) {
+        var next = current.nextSpot(direction, boardArray);
+        if (next == "empty") {
+          next = current;
+          current = 0;
+        } else if (next == "wallOrDiff") {
+          current = current;
+        } else {
+          var newVal = next.val + current.val;
+          next = new Tile(next.row, next.col, newVal);
+          current = 0;
+        };
       };
     };
   };
@@ -191,6 +194,7 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
       game.moveTiles(event.which);
+      game.board.updateDom();
       game.board.placeRandomTile();
     }
   });
