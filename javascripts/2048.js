@@ -42,18 +42,20 @@ Board.prototype.isFull = function () {
 
 
 Board.prototype.findEmptyLocation = function () {
-  var columns = [0, 1, 2, 3];
-  var rows = [0, 1, 2, 3];
-  var randRow = rows.randomElement();
-  var randCol = columns.randomElement();
-  var randVal = ['2','4'][Math.round(Math.random())];
-  if ((this.contents[randRow][randCol]) !== 0) {
-    var tile = new Tile(randRow, randCol, randVal);
-    return tile;
-  } else {
-    this.findEmptyLocation();
+  var columns = [0, 1, 2, 3], rows = [0, 1, 2, 3];
+  var tile = null, randRow = null, randCol = null, randVal = null;
+  while (tile == null) {
+    randRow = rows.randomElement();
+    randCol = columns.randomElement();
+    randVal = ['2','4'][Math.round(Math.random())];
+    // if ((this.contents[randRow][randCol]) !== 0) {
+    //   tile = new Tile(randRow, randCol, randVal);
+    // };
+    tile = true;
   };
+  return tile;
 };
+
 
 //add a new tile in a random unoccupied spot
 Board.prototype.placeRandomTile = function () {
@@ -61,7 +63,7 @@ Board.prototype.placeRandomTile = function () {
   if (this.isFull()) {
   } else {
     newTile = this.findEmptyLocation();
-    placeTile(newTile);
+    this.placeTile(newTile);
   };
 };
 
