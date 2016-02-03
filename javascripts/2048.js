@@ -61,7 +61,7 @@ Tile.prototype.nextSpot = function (direction, board) {
       };
       break;
     case 39: //right
-      if (this.rowNum == 3) {
+      if (this.colNum == 3) {
         return "wallOrDiff";
       } else if (board.contents[this.rowNum][this.colNum+1] == 0) {
         return "empty";
@@ -168,7 +168,7 @@ Game.prototype.moveTiles = function(direction) {
     for (var j = 0; j < boardArray[i].length; j++) {
       var current = boardArray[i][j];
       if (current != 0) {
-        var next = current.nextSpot(direction, boardArray);
+        var next = current.nextSpot(direction, board);
         if (next == "empty") {
           next = current;
           current = 0;
