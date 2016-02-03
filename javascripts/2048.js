@@ -22,7 +22,8 @@ Tile.prototype.nextSpot = function (direction, board) {
       if (this.rowNum == 0) {
         return "wallOrDiff";
       } else if (board.contents[this.rowNum-1][this.colNum] == 0) {
-        return "empty";
+        var response = ["empty",[this.rowNum-1],[this.colNum]];
+        return response;
       } else {
         nextTile = board.contents[this.rowNum-1][this.colNum];
         if (nextTile.valNum == this.valNum) {
@@ -36,7 +37,8 @@ Tile.prototype.nextSpot = function (direction, board) {
       if (this.rowNum == 3) {
         return "wallOrDiff";
       } else if (board.contents[this.rowNum+1][this.colNum] == 0) {
-        return "empty";
+        var response = ["empty",[this.rowNum+1],[this.colNum]];
+        return response;
       } else {
         nextTile = board.contents[this.rowNum+1][this.colNum];
         if (nextTile.valNum == this.valNum) {
@@ -50,7 +52,8 @@ Tile.prototype.nextSpot = function (direction, board) {
       if (this.colNum == 0) {
         return "wallOrDiff";
       } else if (board.contents[this.rowNum][this.colNum-1] == 0) {
-        return "empty";
+        var response = ["empty",[this.rowNum],[this.colNum-1]];
+        return response;
       } else {
         nextTile = board.contents[this.rowNum][this.colNum-1];
         if (nextTile.valNum == this.valNum) {
@@ -64,7 +67,8 @@ Tile.prototype.nextSpot = function (direction, board) {
       if (this.colNum == 3) {
         return "wallOrDiff";
       } else if (board.contents[this.rowNum][this.colNum+1] == 0) {
-        return "empty";
+        var response = ["empty",[this.rowNum],[this.colNum+1]];
+        return response;
       } else {
         nextTile = board.contents[this.rowNum][this.colNum+1];
         if (nextTile.valNum == this.valNum) {
@@ -169,7 +173,7 @@ Game.prototype.moveTiles = function(direction) {
       var current = boardArray[i][j];
       if (current != 0) {
         var next = current.nextSpot(direction, board);
-        if (next == "empty") {
+        if (next[0] == "empty") {
           next = current;
           current = 0;
         } else if (next == "wallOrDiff") {
@@ -182,6 +186,8 @@ Game.prototype.moveTiles = function(direction) {
       };
     };
   };
+  board.contents = boardArray;
+  board.updateDom;
 };
 
 $(document).ready(function() {
@@ -194,7 +200,6 @@ $(document).ready(function() {
     if (arrows.indexOf(event.which) > -1) {
       var tiles = $('.tile');
       game.moveTiles(event.which);
-      game.board.updateDom();
       game.board.placeRandomTile();
     }
   });
