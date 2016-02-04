@@ -15,66 +15,110 @@ var Tile = function (row, col, val) {
 };
 
 Tile.prototype.nextSpot = function (direction, board) {
-  var nextTile = null;
+  var response = { status: null, tile: null, row: null, column: null};
 
   switch(direction) {
     case 38: //up
       if (this.rowNum == 0) {
-        return "wallOrDiff";
+        response.status = "wallOrDiff";
+        return response;
       } else if (board.contents[this.rowNum-1][this.colNum] == 0) {
-        var response = ["empty",[this.rowNum-1],[this.colNum]];
+        response.status = "empty";
+        response.row = (this.rowNum-1);
+        response.column = (this.colNum);
         return response;
       } else {
         nextTile = board.contents[this.rowNum-1][this.colNum];
         if (nextTile.valNum == this.valNum) {
-          return nextTile;
+          response.status = "match";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         } else {
-          return "wallOrDiff";
+          response.status = "wallOrDiff";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         };
       };
       break;
     case 40: //down
       if (this.rowNum == 3) {
-        return "wallOrDiff";
+        response.status = "wallOrDiff";
+        return response;
       } else if (board.contents[this.rowNum+1][this.colNum] == 0) {
-        var response = ["empty",[this.rowNum+1],[this.colNum]];
+        response.status = "empty";
+        response.row = (this.rowNum+1);
+        response.column = (this.colNum);
         return response;
       } else {
         nextTile = board.contents[this.rowNum+1][this.colNum];
         if (nextTile.valNum == this.valNum) {
-          return nextTile;
+          response.status = "match";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         } else {
-          return "wallOrDiff";
+          response.status = "wallOrDiff";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         };
       };
       break;
     case 37: //left
       if (this.colNum == 0) {
-        return "wallOrDiff";
+        response.status = "wallOrDiff";
+        return response;
       } else if (board.contents[this.rowNum][this.colNum-1] == 0) {
-        var response = ["empty",[this.rowNum],[this.colNum-1]];
+        response.status = "empty";
+        response.row = (this.rowNum);
+        response.column = (this.colNum-1);
         return response;
       } else {
         nextTile = board.contents[this.rowNum][this.colNum-1];
         if (nextTile.valNum == this.valNum) {
-          return nextTile;
+          response.status = "match";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         } else {
-          return "wallOrDiff";
+          response.status = "wallOrDiff";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         };
       };
       break;
     case 39: //right
       if (this.colNum == 3) {
-        return "wallOrDiff";
+        response.status = "wallOrDiff";
+        return response;
       } else if (board.contents[this.rowNum][this.colNum+1] == 0) {
-        var response = ["empty",[this.rowNum],[this.colNum+1]];
+        response.status = "empty";
+        response.row = (this.rowNum);
+        response.column = (this.colNum+11);
         return response;
       } else {
         nextTile = board.contents[this.rowNum][this.colNum+1];
         if (nextTile.valNum == this.valNum) {
-          return nextTile;
+          response.status = "match";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         } else {
-          return "wallOrDiff";
+          response.status = "wallOrDiff";
+          response.tile = nextTile;
+          response.row = nextTile.rowNum;
+          response.column = nextTile.colNum;
+          return response;
         };
       };
       break;
@@ -174,10 +218,9 @@ Game.prototype.moveTiles = function(direction) {
       if (current != 0) {
         var next = current.nextSpot(direction, board);
         if (next[0] == "empty") {
-          next = current;
+          boardArray[next[1]][next[2]] = current;
           current = 0;
         } else if (next == "wallOrDiff") {
-          current = current;
         } else {
           var newVal = next.val + current.val;
           next = new Tile(next.row, next.col, newVal);
