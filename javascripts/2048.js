@@ -160,7 +160,7 @@ Game.prototype.moveTiles = function(direction) {
           current = 0;
         } else if (next.status == "match") {
           var newVal = next.tile.valNum + current.valNum;
-          next = new Tile(next.tile.row, next.tile.column, newVal);
+          next = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
           current = 0;
         };
       };
