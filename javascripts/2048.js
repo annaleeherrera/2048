@@ -150,32 +150,38 @@ var Game = function() {
 Game.prototype.moveTiles = function(direction) {
   var board = this.board;
   var boardArray = board.contents;
-  var allTilesFinished = false;
-  while (allTilesFinished = false) {
-    allTilesFinished = true;
+
+  var chooseAction = function (current, direction, board) {
+    var boardArray = board.contents;
+    if (current != 0) {
+      var next = current.nextSpot(direction, board);
+      if (next.status == "empty") {
+        boardArray[next.row][next.column] = current;
+        current = 0;
+      } else if (next.status == "match") {
+        var newVal = next.tile.valNum + current.valNum;
+         boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
+         current = 0;
+      } else if (next.status == "wallOrDiff") {
+        boardArray[i][j] = current;
+      };
+    };
+    return boardArray;
+  };
+
+  var updatedBoardArray = null;
+  while (boardArray !== updatedBoardArray) {
     for (var i = 0; i < boardArray.length; i++) {
       for (var j = 0; j < boardArray[i].length; j++) {
         var current = boardArray[i][j];
-        if (current != 0) {
-          var next = current.nextSpot(direction, board);
-          if (next.status == "empty") {
-            boardArray[next.row][next.column] = current;
-            current = 0;
-            allTilesFinished = false;
-          } else if (next.status == "match") {
-            var newVal = next.tile.valNum + current.valNum;
-             boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
-             current = 0;
-             allTilesFinished = false;
-          } else {
-            boardArray[i][j] = current;
-          };
-        };
+        var updatedBoardArray = chooseAction(current, direction, board);
+        board.contents = updatedBoardArray;
+        board.updateDom();
       };
     };
   };
-  board.contents = boardArray;
-  board.updateDom;
+  this.board.contents = updatedBoardArray;
+  this.board.updateDom();
 };
 
 $(document).ready(function() {
