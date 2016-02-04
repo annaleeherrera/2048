@@ -174,7 +174,7 @@ Game.prototype.moveTiles = function(direction) {
     for (var i = 0; i < boardArray.length; i++) {
       for (var j = 0; j < boardArray[i].length; j++) {
         var current = boardArray[i][j];
-        var updatedBoardArray = chooseAction(current, direction, board);
+        updatedBoardArray = chooseAction(current, direction, board);
         board.contents = updatedBoardArray;
         board.updateDom();
       };
