@@ -121,6 +121,11 @@ Board.prototype.placeTile = function (tile) {
   this.updateDom();
 };
 
+Board.prototype.removeTile = function (tile) {
+  this.contents[tile.rowNum][tile.colNum] = 0;
+  this.updateDom();
+};
+
 //board talks to DOM based on what it's storing
 Board.prototype.updateDom = function () {
   //makes it so everything in the board is represented by a line of html
@@ -156,17 +161,17 @@ Game.prototype.moveTiles = function(direction) {
     if (current != 0) {
       var next = current.nextSpot(direction, board);
       if (next.status == "empty") {
-        boardArray[next.row][next.column] = current;
-        boardArray[current.rowNum][current.colNum]= 0;
+        movedTile = new Tile(next.row, next.column, current.valNum);
+        board.removeTile(current);
+        board.placeTile(movedTile);
       } else if (next.status == "match") {
          var newVal = next.tile.valNum + current.valNum;
-         boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
-         boardArray[current.rowNum][current.colNum]= 0;
-      } else if (next.status == "wallOrDiff") {
-        boardArray[current.rowNum][current.colNum] = current;
+         mergedTile = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
+         board.removeTile(current);
+         board.placeTile(mergedTile);
       };
     };
-    return boardArray;
+    return board.contents;
   };
 
   var updatedBoardArray = null;
@@ -176,12 +181,10 @@ Game.prototype.moveTiles = function(direction) {
         var current = boardArray[i][j];
         updatedBoardArray = chooseAction(current, direction, board);
         board.contents = updatedBoardArray;
-        board.updateDom();
       };
     };
   };
   this.board.contents = updatedBoardArray;
-  this.board.updateDom();
 };
 
 $(document).ready(function() {
