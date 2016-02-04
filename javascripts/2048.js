@@ -157,13 +157,13 @@ Game.prototype.moveTiles = function(direction) {
       var next = current.nextSpot(direction, board);
       if (next.status == "empty") {
         boardArray[next.row][next.column] = current;
-        current = 0;
+        boardArray[current.rowNum][current.colNum]= 0;
       } else if (next.status == "match") {
-        var newVal = next.tile.valNum + current.valNum;
+         var newVal = next.tile.valNum + current.valNum;
          boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
-         current = 0;
+         boardArray[current.rowNum][current.colNum]= 0;
       } else if (next.status == "wallOrDiff") {
-        boardArray[i][j] = current;
+        boardArray[current.rowNum][current.colNum] = current;
       };
     };
     return boardArray;
