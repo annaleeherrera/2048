@@ -162,6 +162,8 @@ Game.prototype.moveTiles = function(direction) {
           var newVal = next.tile.valNum + current.valNum;
            boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
           current = 0;
+        } else {
+          boardArray[i][j] = current;
         };
       };
     };
