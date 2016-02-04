@@ -4,7 +4,7 @@ Array.prototype.randomElement = function () {
 };
 
 //TILES
-//arguments to be passed in to create tiles are strings
+//arguments to be passed in to create tiles are numbers
 var Tile = function (row, col, val) {
   this.colNum = col;
   this.rowNum = row;
@@ -27,10 +27,10 @@ Tile.prototype.nextSpot = function (direction, board) {
     } else if (board.contents[coordinates[0]][coordinates[1]] == 0) {
       response.status = "empty";
       response.row = coordinates[0];
-      response.column = [coordinates[1];
+      response.column = coordinates[1];
       return response;
     } else {
-      nextTile = board.contents[[coordinates[0]][coordinates[1]];
+      nextTile = board.contents[coordinates[0]][coordinates[1]];
       if (nextTile.valNum == this.valNum) {
         response.status = "match";
         response.tile = nextTile;
@@ -49,16 +49,16 @@ Tile.prototype.nextSpot = function (direction, board) {
 
   switch(direction) {
     case 38: //up
-      return lookAtSpot(this.rowNum, 0, [[this.rowNum-1][this.colNum]]);
+      return lookAtSpot(this.rowNum, 0, [[this.rowNum-1],[this.colNum]]);
       break;
     case 40: //down
-      return lookAtSpot(this.rowNum, 3, [[this.rowNum+1][this.colNum]]);
+      return lookAtSpot(this.rowNum, 3, [[this.rowNum+1],[this.colNum]]);
       break;
     case 37: //left
-      return lookAtSpot(this.colNum, 0, [[this.rowNum][this.colNum-1]]);
+      return lookAtSpot(this.colNum, 0, [[this.rowNum],[this.colNum-1]]);
       break;
     case 39: //right
-      return lookAtSpot(this.colNum, 3, [[this.rowNum][this.colNum+1]]);
+      return lookAtSpot(this.colNum, 3, [[this.rowNum],[this.colNum+1]]);
       break;
     };
   };
@@ -161,7 +161,7 @@ Game.prototype.moveTiles = function(direction) {
         } else if (next == "wallOrDiff") {
         } else {
           var newVal = next.val + current.val;
-          next = new Tile(next.row, next.col, newVal);
+          next = new Tile(next.row, next.column, newVal);
           current = 0;
         };
       };
