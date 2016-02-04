@@ -132,6 +132,7 @@ Board.prototype.updateDom = function () {
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
       if (tile === 0) {
+        return;
       } else {
         gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
       };
@@ -156,18 +157,18 @@ Game.prototype.moveTiles = function(direction) {
       if (current != 0) {
         var next = current.nextSpot(direction, board);
         if (next.status == "empty") {
+          boardArray[i][j] = 0;
           boardArray[next.row][next.column] = current;
-          current = 0;
         } else if (next.status == "match") {
+          boardArray[i][j] = 0;
           var newVal = next.tile.valNum + current.valNum;
           next = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
-          current = 0;
         };
       };
     };
   };
   board.contents = boardArray;
-  board.updateDom;
+  board.updateDom();
 };
 
 $(document).ready(function() {
@@ -178,7 +179,6 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
-      var tiles = $('.tile');
       game.moveTiles(event.which);
       game.board.placeRandomTile();
     }
