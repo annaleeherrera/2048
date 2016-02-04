@@ -174,17 +174,24 @@ Game.prototype.moveTiles = function(direction) {
     return board.contents;
   };
 
-  var updatedBoardArray = null;
-  while (boardArray !== updatedBoardArray) {
+  var loopTiles = function (boardArray) {
     for (var i = 0; i < boardArray.length; i++) {
       for (var j = 0; j < boardArray[i].length; j++) {
         var current = boardArray[i][j];
         updatedBoardArray = chooseAction(current, direction, board);
-        board.contents = updatedBoardArray;
       };
     };
+    return updatedBoardArray;
   };
-  this.board.contents = updatedBoardArray;
+
+  var allTilesFinished = false;
+  while (allTilesFinished == false) {
+    boardArray = loopTiles(boardArray);
+    if (boardArray == loopTiles(boardArray)) {
+      allTilesFinished = true;
+    };
+  };
+  this.board.contents = boardArray;
 };
 
 $(document).ready(function() {
