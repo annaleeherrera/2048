@@ -15,112 +15,50 @@ var Tile = function (row, col, val) {
 };
 
 Tile.prototype.nextSpot = function (direction, board) {
-  var response = { status: null, tile: null, row: null, column: null};
+
+  //rowOrCol is either this.rowNum or this.colNum
+  //edge is 0 or 3
+  //cordinates are something like [this.rowNum-1][this.colNum]
+  var lookAtSpot = function (rowOrCol, edge, coordinates) {
+    var response = { status: null, tile: null, row: null, column: null};
+    if (rowOrCol == edge) {
+      response.status = "wallOrDiff";
+      return response;
+    } else if (board.contents[coordinates[0]][coordinates[1]] == 0) {
+      response.status = "empty";
+      response.row = coordinates[0];
+      response.column = [coordinates[1];
+      return response;
+    } else {
+      nextTile = board.contents[[coordinates[0]][coordinates[1]];
+      if (nextTile.valNum == this.valNum) {
+        response.status = "match";
+        response.tile = nextTile;
+        response.row = nextTile.rowNum;
+        response.column = nextTile.colNum;
+        return response;
+      } else {
+        response.status = "wallOrDiff";
+        response.tile = nextTile;
+        response.row = nextTile.rowNum;
+        response.column = nextTile.colNum;
+        return response;
+      };
+    };
+  }
 
   switch(direction) {
     case 38: //up
-      if (this.rowNum == 0) {
-        response.status = "wallOrDiff";
-        return response;
-      } else if (board.contents[this.rowNum-1][this.colNum] == 0) {
-        response.status = "empty";
-        response.row = (this.rowNum-1);
-        response.column = (this.colNum);
-        return response;
-      } else {
-        nextTile = board.contents[this.rowNum-1][this.colNum];
-        if (nextTile.valNum == this.valNum) {
-          response.status = "match";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        } else {
-          response.status = "wallOrDiff";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        };
-      };
+      return lookAtSpot(this.rowNum, 0, [[this.rowNum-1][this.colNum]]);
       break;
     case 40: //down
-      if (this.rowNum == 3) {
-        response.status = "wallOrDiff";
-        return response;
-      } else if (board.contents[this.rowNum+1][this.colNum] == 0) {
-        response.status = "empty";
-        response.row = (this.rowNum+1);
-        response.column = (this.colNum);
-        return response;
-      } else {
-        nextTile = board.contents[this.rowNum+1][this.colNum];
-        if (nextTile.valNum == this.valNum) {
-          response.status = "match";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        } else {
-          response.status = "wallOrDiff";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        };
-      };
+      return lookAtSpot(this.rowNum, 3, [[this.rowNum+1][this.colNum]]);
       break;
     case 37: //left
-      if (this.colNum == 0) {
-        response.status = "wallOrDiff";
-        return response;
-      } else if (board.contents[this.rowNum][this.colNum-1] == 0) {
-        response.status = "empty";
-        response.row = (this.rowNum);
-        response.column = (this.colNum-1);
-        return response;
-      } else {
-        nextTile = board.contents[this.rowNum][this.colNum-1];
-        if (nextTile.valNum == this.valNum) {
-          response.status = "match";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        } else {
-          response.status = "wallOrDiff";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        };
-      };
+      return lookAtSpot(this.colNum, 0, [[this.rowNum][this.colNum-1]]);
       break;
     case 39: //right
-      if (this.colNum == 3) {
-        response.status = "wallOrDiff";
-        return response;
-      } else if (board.contents[this.rowNum][this.colNum+1] == 0) {
-        response.status = "empty";
-        response.row = (this.rowNum);
-        response.column = (this.colNum+11);
-        return response;
-      } else {
-        nextTile = board.contents[this.rowNum][this.colNum+1];
-        if (nextTile.valNum == this.valNum) {
-          response.status = "match";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        } else {
-          response.status = "wallOrDiff";
-          response.tile = nextTile;
-          response.row = nextTile.rowNum;
-          response.column = nextTile.colNum;
-          return response;
-        };
-      };
+      return lookAtSpot(this.colNum, 3, [[this.rowNum][this.colNum+1]]);
       break;
     };
   };
