@@ -19,7 +19,7 @@ Tile.prototype.nextSpot = function (direction, board) {
   //rowOrCol is either this.rowNum or this.colNum
   //edge is 0 or 3
   //cordinates are something like [this.rowNum-1][this.colNum]
-  var lookAtSpot = function (rowOrCol, edge, coordinates) {
+  var lookAtSpot = function (rowOrCol, edge, value, coordinates) {
     var response = { status: null, tile: null, row: null, column: null};
     if (rowOrCol == edge) {
       response.status = "wallOrDiff";
@@ -31,7 +31,7 @@ Tile.prototype.nextSpot = function (direction, board) {
       return response;
     } else {
       nextTile = board.contents[coordinates[0]][coordinates[1]];
-      if (nextTile.valNum == this.valNum) {
+      if (nextTile.valNum == value) {
         response.status = "match";
         response.tile = nextTile;
         response.row = nextTile.rowNum;
@@ -49,16 +49,16 @@ Tile.prototype.nextSpot = function (direction, board) {
 
   switch(direction) {
     case 38: //up
-      return lookAtSpot(this.rowNum, 0, [[this.rowNum-1],[this.colNum]]);
+      return lookAtSpot(this.rowNum, 0, this.valNum, [[this.rowNum-1],[this.colNum]]);
       break;
     case 40: //down
-      return lookAtSpot(this.rowNum, 3, [[this.rowNum+1],[this.colNum]]);
+      return lookAtSpot(this.rowNum, 3, this.valNum,  [[this.rowNum+1],[this.colNum]]);
       break;
     case 37: //left
-      return lookAtSpot(this.colNum, 0, [[this.rowNum],[this.colNum-1]]);
+      return lookAtSpot(this.colNum, 0, this.valNum, [[this.rowNum],[this.colNum-1]]);
       break;
     case 39: //right
-      return lookAtSpot(this.colNum, 3, [[this.rowNum],[this.colNum+1]]);
+      return lookAtSpot(this.colNum, 3, this.valNum, [[this.rowNum],[this.colNum+1]]);
       break;
     };
   };
@@ -132,7 +132,6 @@ Board.prototype.updateDom = function () {
   (this.contents).forEach(function (row) {
     row.forEach(function (tile) {
       if (tile === 0) {
-        return;
       } else {
         gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
       };
@@ -157,18 +156,18 @@ Game.prototype.moveTiles = function(direction) {
       if (current != 0) {
         var next = current.nextSpot(direction, board);
         if (next.status == "empty") {
-          boardArray[i][j] = 0;
           boardArray[next.row][next.column] = current;
+          current = 0;
         } else if (next.status == "match") {
-          boardArray[i][j] = 0;
           var newVal = next.tile.valNum + current.valNum;
-          next = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
+           boardArray[next.row][next.column] = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
+          current = 0;
         };
       };
     };
   };
   board.contents = boardArray;
-  board.updateDom();
+  board.updateDom;
 };
 
 $(document).ready(function() {
@@ -179,6 +178,7 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
+      var tiles = $('.tile');
       game.moveTiles(event.which);
       game.board.placeRandomTile();
     }
