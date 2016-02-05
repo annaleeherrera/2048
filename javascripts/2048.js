@@ -199,7 +199,6 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
-      var tiles = $('.tile');
       game.moveTiles(event.which);
       game.board.placeRandomTile();
     }
