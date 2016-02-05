@@ -120,8 +120,9 @@ Board.prototype.placeTile = function (tile) {
   gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
 };
 
-Board.prototype.shiftTile = function (tile) {
-
+Board.prototype.shiftTile = function (oldtile, newtile) {
+  var tile = $( ".tile[data-row$="+ oldtile.row + "][data-col$=" + oldtile.col + "]" );
+  tile.setAttribute("data-row", "")
 };
 
 ///GAME
@@ -140,11 +141,13 @@ Game.prototype.moveTiles = function(direction) {
       var next = current.nextSpot(direction, board);
       if (next.status == "empty") {
         movedTile = new Tile(next.row, next.column, current.valNum);
-        board.shiftTile(current, movedTile)
+        board.shiftTile(current, movedTile);
+        board.contents[current.rowNum][current.colNum] = 0;
       } else if (next.status == "match") {
          var newVal = next.tile.valNum + current.valNum;
          mergedTile = new Tile(next.row, next.column, newVal);
          board.shiftTile(current, mergedTile);
+         board.contents[current.rowNum][current.colNum] = 0;
       };
     };
     return board.contents;
