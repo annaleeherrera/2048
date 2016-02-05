@@ -16,21 +16,19 @@ var Tile = function (row, col, val) {
 
 Tile.prototype.nextSpot = function (direction, board) {
 
-  //rowOrCol is either this.rowNum or this.colNum
   //edge is 0 or 3
-  //cordinates are something like [this.rowNum-1][this.colNum]
-  var lookAtSpot = function (rowOrCol, edge, value, coordinates) {
+  var lookAtSpot = function (rowOrCol, edge, value, currRow, currCol, board) {
     var response = { status: null, tile: null, row: null, column: null};
     if (rowOrCol == edge) {
       response.status = "wallOrDiff";
       return response;
-    } else if (board.contents[coordinates[0]][coordinates[1]] == 0) {
+    } else if (board.contents[currRow][currCol] == 0) {
       response.status = "empty";
-      response.row = coordinates[0];
-      response.column = coordinates[1];
+      response.row = currRow;
+      response.column = currCol;
       return response;
     } else {
-      nextTile = board.contents[coordinates[0]][coordinates[1]];
+      nextTile = board.contents[currRow][currCol];
       if (nextTile.valNum == value) {
         response.status = "match";
         response.tile = nextTile;
@@ -49,16 +47,16 @@ Tile.prototype.nextSpot = function (direction, board) {
 
   switch(direction) {
     case 38: //up
-      return lookAtSpot(this.rowNum, 0, this.valNum, [[this.rowNum-1],[this.colNum]]);
+      return lookAtSpot(this.rowNum, 0, this.valNum, this.rowNum-1, this.colNum, board);
       break;
     case 40: //down
-      return lookAtSpot(this.rowNum, 3, this.valNum,  [[this.rowNum+1],[this.colNum]]);
+      return lookAtSpot(this.rowNum, 3, this.valNum, (this.rowNum)+1, this.colNum, board);
       break;
     case 37: //left
-      return lookAtSpot(this.colNum, 0, this.valNum, [[this.rowNum],[this.colNum-1]]);
+      return lookAtSpot(this.colNum, 0, this.valNum, this.rowNum, (this.colNum)-1, board);
       break;
     case 39: //right
-      return lookAtSpot(this.colNum, 3, this.valNum, [[this.rowNum],[this.colNum+1]]);
+      return lookAtSpot(this.colNum, 3, this.valNum, this.rowNum,(this.colNum)+1, board);
       break;
     };
   };
@@ -165,7 +163,7 @@ Game.prototype.moveTiles = function(direction) {
         board.placeTile(movedTile);
       } else if (next.status == "match") {
          var newVal = next.tile.valNum + current.valNum;
-         mergedTile = new Tile(next.tile.rowNum, next.tile.colNum, newVal);
+         mergedTile = new Tile(next.row, next.column, newVal);
          board.removeTile(current);
          board.placeTile(mergedTile);
       };
