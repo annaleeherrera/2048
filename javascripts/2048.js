@@ -115,17 +115,13 @@ Board.prototype.placeRandomTile = function () {
 //places a tile onto the board
 //takes tile object as parameter
 Board.prototype.placeTile = function (tile) {
-  if (tile == 0) {
-  } else {
+  this.contents[tile.rowNum][tile.colNum]= tile;
   var gameboard= $("#gameboard");
   gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
-  };
 };
 
-Board.prototype.removeTile = function (tile) {
-  var gameboard= $("#gameboard");
-  this.contents[tile.rowNum][tile.colNum] = 0;
-  gameboard.remove('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
+Board.prototype.shiftTile = function (tile) {
+
 };
 
 ///GAME
@@ -144,13 +140,11 @@ Game.prototype.moveTiles = function(direction) {
       var next = current.nextSpot(direction, board);
       if (next.status == "empty") {
         movedTile = new Tile(next.row, next.column, current.valNum);
-        board.removeTile(current);
-        board.placeTile(movedTile);
+        board.shiftTile(current, movedTile)
       } else if (next.status == "match") {
          var newVal = next.tile.valNum + current.valNum;
          mergedTile = new Tile(next.row, next.column, newVal);
-         board.removeTile(current);
-         board.placeTile(mergedTile);
+         board.shiftTile(current, mergedTile);
       };
     };
     return board.contents;
