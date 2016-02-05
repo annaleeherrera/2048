@@ -128,26 +128,6 @@ Board.prototype.removeTile = function (tile) {
   gameboard.remove('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
 };
 
-//board talks to DOM based on what it's storing
-// Board.prototype.updateDom = function (tile) {
-  //makes it so everything in the board is represented by a line of html
-  //first remove old tiles
-  // var gameboard= $("#gameboard");
-  // var tiles = $(".tile");
-  // tiles.remove();
-  //  tiles.fadeOut(40, function() { tiles.remove(); });
-  //then add updated tiles
-  // (this.contents).forEach(function (row) {
-  //   row.forEach(function (tile) {
-  //     if (tile === 0) {
-  //     } else {
-  //       gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>').fadeIn(40);;
-//       };
-//     });
-//   });
-// };
-
-
 ///GAME
 var Game = function() {
   this.board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
