@@ -187,7 +187,7 @@ Game.prototype.moveTiles = function(direction) {
   while (allTilesFinished == false) {
     boardArray = loopTiles(boardArray);
     this.board.contents = boardArray;
-    if (boardArray == loopTiles(boardArray)) {
+    if (boardArray == loopTiles(loopTiles(boardArray))) {
       allTilesFinished = true;
     };
   };
