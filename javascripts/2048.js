@@ -115,32 +115,37 @@ Board.prototype.placeRandomTile = function () {
 //places a tile onto the board
 //takes tile object as parameter
 Board.prototype.placeTile = function (tile) {
-  this.contents[tile.rowNum][tile.colNum] = tile;
-  this.updateDom();
+  if (tile == 0) {
+  } else {
+  var gameboard= $("#gameboard");
+  gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
+  };
 };
 
 Board.prototype.removeTile = function (tile) {
+  var gameboard= $("#gameboard");
   this.contents[tile.rowNum][tile.colNum] = 0;
-  this.updateDom();
+  gameboard.remove('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
 };
 
 //board talks to DOM based on what it's storing
-Board.prototype.updateDom = function () {
+// Board.prototype.updateDom = function (tile) {
   //makes it so everything in the board is represented by a line of html
   //first remove old tiles
-  var gameboard= $("#gameboard");
-  var tiles = $(".tile");
-  tiles.remove();
+  // var gameboard= $("#gameboard");
+  // var tiles = $(".tile");
+  // tiles.remove();
+  //  tiles.fadeOut(40, function() { tiles.remove(); });
   //then add updated tiles
-  (this.contents).forEach(function (row) {
-    row.forEach(function (tile) {
-      if (tile === 0) {
-      } else {
-        gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
-      };
-    });
-  });
-};
+  // (this.contents).forEach(function (row) {
+  //   row.forEach(function (tile) {
+  //     if (tile === 0) {
+  //     } else {
+  //       gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>').fadeIn(40);;
+//       };
+//     });
+//   });
+// };
 
 
 ///GAME
