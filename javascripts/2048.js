@@ -157,7 +157,6 @@ Game.prototype.moveTiles = function(direction) {
   var boardArray = board.contents;
 
   var chooseAction = function (current, direction, board) {
-    var boardArray = board.contents;
     if (current != 0) {
       var next = current.nextSpot(direction, board);
       if (next.status == "empty") {
@@ -187,11 +186,11 @@ Game.prototype.moveTiles = function(direction) {
   var allTilesFinished = false;
   while (allTilesFinished == false) {
     boardArray = loopTiles(boardArray);
+    this.board.contents = boardArray;
     if (boardArray == loopTiles(boardArray)) {
       allTilesFinished = true;
     };
   };
-  this.board.contents = boardArray;
 };
 
 $(document).ready(function() {
