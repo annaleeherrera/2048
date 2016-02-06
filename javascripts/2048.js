@@ -5,7 +5,8 @@ Array.prototype.randomElement = function () {
 
 //TILES
 //arguments to be passed in to create tiles are numbers
-var Tile = function (row, col, val) {
+var Tile = function (row, col, val, id) {
+  this.id = id;
   this.colNum = col;
   this.rowNum = row;
   this.valNum = val;
@@ -63,6 +64,7 @@ Tile.prototype.nextSpot = function (direction, board) {
 
 //BOARD
 var Board = function (array) {
+  this.tileCounter = 1;
   this.contents = array;
 };
 
@@ -95,7 +97,8 @@ Board.prototype.findEmptyLocation = function () {
     randCol = columns.randomElement();
     randVal = ['2','4'][Math.round(Math.random())];
     if ((this.contents[randRow][randCol]) === 0) {
-      tile = new Tile(randRow, randCol, Number(randVal));
+      tile = new Tile(randRow, randCol, Number(randVal), this.tileCounter);
+      this.tileCounter += 1;
     };
   };
   return tile;
@@ -117,12 +120,13 @@ Board.prototype.placeRandomTile = function () {
 Board.prototype.placeTile = function (tile) {
   this.contents[tile.rowNum][tile.colNum]= tile;
   var gameboard= $("#gameboard");
-  gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val="' + tile.val +'">'+ tile.valNum + '</div>');
+  gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val=' + tile.val + ' data-id=' + tile.id + ' >'+ tile.valNum + '</div>');
 };
 
 Board.prototype.shiftTile = function (oldtile, newtile) {
   var tile = $( ".tile[data-row$="+ oldtile.row + "][data-col$=" + oldtile.col + "]" );
-  tile.setAttribute("data-row", "")
+  tile.attr({"data-row": newtile.row, "data-col": newtile.col, "data-val": newtile.val});
+  tile.html(newtile.val);
 };
 
 ///GAME
