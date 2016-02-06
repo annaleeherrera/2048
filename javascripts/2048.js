@@ -26,7 +26,7 @@ Tile.prototype.nextSpot = function (direction, board) {
     } else if (board.contents[currRow][currCol] == 0) {
       response.status = "empty";
       response.row = currRow;
-      response.column = currCol;
+      response.col = currCol;
       return response;
     } else {
       nextTile = board.contents[currRow][currCol];
@@ -34,13 +34,13 @@ Tile.prototype.nextSpot = function (direction, board) {
         response.status = "match";
         response.tile = nextTile;
         response.row = nextTile.rowNum;
-        response.column = nextTile.colNum;
+        response.col = nextTile.colNum;
         return response;
       } else {
         response.status = "wallOrDiff";
         response.tile = nextTile;
         response.row = nextTile.rowNum;
-        response.column = nextTile.colNum;
+        response.col = nextTile.colNum;
         return response;
       };
     };
@@ -123,10 +123,22 @@ Board.prototype.placeTile = function (tile) {
   gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val=' + tile.val + ' data-id=' + tile.id + ' >'+ tile.valNum + '</div>');
 };
 
-Board.prototype.shiftTile = function (oldtile, newtile) {
-  var tile = $( ".tile[data-row$="+ oldtile.row + "][data-col$=" + oldtile.col + "]" );
-  tile.attr({"data-row": newtile.row, "data-col": newtile.col, "data-val": newtile.val});
-  tile.html(newtile.val);
+Board.prototype.shiftTile = function (tile, next) {
+  //get div from the tile
+  tileDiv = $(".tile[data-id=" + tile.id + "]");
+  if (next.status == "match") {
+    tileDiv.attr({
+      "data-row": next.row,
+      "data-col": next.col,
+      "data-val": (tile.val * 2)
+    });
+    tileDiv.html = tile.val * 2;
+  } else if (next.status == "empty") {
+    tileDiv.attr({
+      "data-row": next.row,
+      "data-col": next.col
+    });
+  };
 };
 
 ///GAME
@@ -143,16 +155,8 @@ Game.prototype.moveTiles = function(direction) {
   var chooseAction = function (current, direction, board) {
     if (current != 0) {
       var next = current.nextSpot(direction, board);
-      if (next.status == "empty") {
-        movedTile = new Tile(next.row, next.column, current.valNum);
-        board.shiftTile(current, movedTile);
-        board.contents[current.rowNum][current.colNum] = 0;
-      } else if (next.status == "match") {
-         var newVal = next.tile.valNum + current.valNum;
-         mergedTile = new Tile(next.row, next.column, newVal);
-         board.shiftTile(current, mergedTile);
-         board.contents[current.rowNum][current.colNum] = 0;
-      };
+      board.shiftTile(current, next);
+      board.contents[current.rowNum][current.colNum] = 0;
     };
     return board.contents;
   };
