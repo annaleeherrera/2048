@@ -125,6 +125,7 @@ Board.prototype.placeTile = function (tile) {
 
 Board.prototype.shiftTile = function (tile, next) {
   tileDiv = $(".tile[data-id=" + tile.id + "]");
+  //updates the div and the board
   if (next.status == "match") {
     tileDiv.attr({
       "data-row": next.row,
@@ -138,6 +139,8 @@ Board.prototype.shiftTile = function (tile, next) {
       "data-col": next.col
     });
   };
+  this.contents[tile.rowNum][tile.colNum] = 0;
+  this.contents[next.row[1]][next.col[1]] = tile;
 };
 
 ///GAME
@@ -155,7 +158,6 @@ Game.prototype.moveTiles = function(direction) {
     if (current != 0) {
       var next = current.nextSpot(direction, board);
       board.shiftTile(current, next);
-      board.contents[current.rowNum][current.colNum] = 0;
     };
     return board.contents;
   };
