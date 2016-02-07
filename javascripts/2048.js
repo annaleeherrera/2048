@@ -153,14 +153,16 @@ Board.prototype.shiftTile = function (tile, next) {
   };
 };
 
-Board.prototype.loopTiles = function (direction) {
-  for (var i = 0; i < this.contents.length; i++) {
-    for (var j = 0; j < this.contents[i].length; j++) {
+Board.prototype.loopTiles = function (direction, ) {
+  // for (var i = 0; i < this.contents.length; i++) {
+    // for (var j = 0; j < this.contents[i].length; j++) {
+    for (var i = (this.contents.length-1); i >= 0; i--) {
+      for (var j = (this.contents[i].length-1); j >= 0; j--) {
       var current = this.contents[i][j];
       //only work on spots on board that contain tiles
       if (current != 0) {
         var next = current.nextSpot(direction, this);
-        //keep moving a tile until it hits a wall or different value tile
+        //keep moving a tile until it hits a wall or different value
         while (next.status != "wallOrDiff") {
           if (next.status == "empty") {
             //when empty is next, ok to keep going
@@ -180,7 +182,13 @@ Board.prototype.loopTiles = function (direction) {
 
 
 Board.prototype.moveTiles = function (direction) {
-    this.loopTiles(direction);
+  //iterate over board differently for different directions
+  //left or up vs right or down
+  if (direction == 37 || direction == 38) {
+  this.loopTiles(direction);
+  } else if (direction == 39 || direction == 40) {
+    this.loopTiles();
+  };
 };
 
 
