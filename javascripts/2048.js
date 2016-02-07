@@ -19,28 +19,28 @@ Tile.prototype.nextSpot = function (direction, board) {
 
   //edge is 0 or 3
   var lookAtSpot = function (rowOrCol, edge, value, currRow, currCol, board) {
-    var response = { status: null, tile: null, row: null, column: null};
+    var response = { status: null, tile: null, row: null, col: null};
     if (rowOrCol == edge) {
       response.status = "wallOrDiff";
       return response;
     } else if (board.contents[currRow][currCol] == 0) {
       response.status = "empty";
-      response.row = currRow;
-      response.col = currCol;
+      response.row = "r" + Number(currRow);
+      response.col = "c" + Number(currCol);
       return response;
     } else {
       nextTile = board.contents[currRow][currCol];
       if (nextTile.valNum == value) {
         response.status = "match";
         response.tile = nextTile;
-        response.row = nextTile.rowNum;
-        response.col = nextTile.colNum;
+        response.row = nextTile.row;
+        response.col = nextTile.col;
         return response;
       } else {
         response.status = "wallOrDiff";
         response.tile = nextTile;
-        response.row = nextTile.rowNum;
-        response.col = nextTile.colNum;
+        response.row = nextTile.row;
+        response.col = nextTile.col;
         return response;
       };
     };
