@@ -72,6 +72,11 @@ Tile.prototype.nextSpot = function (direction, board) {
     tileDiv[0].innerHTML = this.val;
   };
 
+  Tile.prototype.deleteTileDiv = function () {
+    tileDiv = $(".tile[data-id=" + this.id + "]");
+    tileDiv.remove();
+  };
+
 //BOARD
 var Board = function (array) {
   this.tileCounter = 1;
@@ -139,7 +144,7 @@ Board.prototype.moveTiles = function (direction) {
   //iterate over board differently for different directions
   //left or up vs right or down
   if (direction == 37 || direction == 38) {
-  this.loopTilesForward(direction);
+    this.loopTilesForward(direction);
   } else if (direction == 39 || direction == 40) {
     this.loopTilesBackward(direction);
   };
@@ -171,12 +176,12 @@ Board.prototype.processOneTile = function (direction, i, j){
     while (next.status != "wallOrDiff") {
       if (next.status == "empty") {
         //when next is empty, ok to keep going
-        this.shiftTile(current, next, value);
-        next = current.nextSpot(direction, this, current.val);
+        this.shiftTile(current, next, current.val);
+        next = current.nextSpot(direction, this);
       } else if (next.status == "match") {
         //if it's a match, do combine but then break.
         //only allowed to collide once
-        var value = current.val * 2;
+        var value = (current.val * 2);
         this.shiftTile(current, next, value);
         break;
       };
@@ -184,19 +189,24 @@ Board.prototype.processOneTile = function (direction, i, j){
   };
 };
 
-Board.prototype.shiftTile = function (tile, next) {
+Board.prototype.shiftTile = function (tile, next, value) {
   //updates the tile, the div and the board
     this.contents[tile.rowNum][tile.colNum] = 0;
     tile.row = next.row;
     tile.col = next.col;
-    tile.colNum = Number(tile.col[1]);
-    tile.rowNum = Number(tile.row[1]);
-    tile.val = (tile.val * 2);
-    tile.valNum = Number(tile.val);
+    tile.colNum = Number(next.col[1]);
+    tile.rowNum = Number(next.row[1]);
+    tile.val = value;
+    tile.valNum = Number(value);
     tile.updateTileDiv();
+
+    //if there is an adjacent tile, can keep tile object around but need to
+    //get rid of the div
+    if (next.tile) {
+      next.tile.deleteTileDiv();
+    };
     this.contents[tile.rowNum][tile.colNum] = tile;
-  };
-}
+};
 
 ///GAME
 var Game = function() {
