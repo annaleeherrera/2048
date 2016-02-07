@@ -135,7 +135,8 @@ Board.prototype.placeTile = function (tile) {
 
 Board.prototype.shiftTile = function (tile, next) {
   //updates the tile, the div and the board
-  if (next.status != "wallOrDiff") {
+  if (next.status !== "wallOrDiff") {
+    this.contents[tile.rowNum][tile.colNum] = 0;
     tile.row = next.row;
     tile.col = next.col;
     tile.colNum = Number(tile.col[1]);
@@ -145,9 +146,8 @@ Board.prototype.shiftTile = function (tile, next) {
       tile.val = (tile.val * 2);
       tile.valNum = Number(tile.val);
     };
-  this.contents[tile.rowNum][tile.colNum] = 0;
-  this.contents[next.row[1]][next.col[1]] = tile;
   tile.updateTileDiv();
+  this.contents[tile.rowNum][tile.colNum] = tile;
   };
 };
 
@@ -167,6 +167,7 @@ Board.prototype.moveTiles = function (direction) {
   var allTilesFinished = false;
   while (allTilesFinished == false) {
     var oldArray = this.contents;
+    this.loopTiles(direction);
     this.loopTiles(direction);
     var newArray = this.contents;
     if (oldArray == newArray) {
