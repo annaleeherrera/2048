@@ -83,12 +83,6 @@ var Board = function (array) {
   this.contents = array;
 };
 
-//board updates itself based on movement of tiles
-// Board.prototype.update = function (newArray) {
-//   this.contents = newArray;
-// };
-
-
 Board.prototype.isFull = function () {
   var full = true;
   var boardArray = this.contents;
@@ -198,7 +192,6 @@ Board.prototype.shiftTile = function (tile, next, value) {
     tile.rowNum = Number(next.row[1]);
     tile.val = value;
     tile.valNum = Number(value);
-    tile.updateTileDiv();
 
     //if there is an adjacent tile, can keep tile object around but need to
     //get rid of the div
@@ -206,6 +199,7 @@ Board.prototype.shiftTile = function (tile, next, value) {
       next.tile.deleteTileDiv();
     };
     this.contents[tile.rowNum][tile.colNum] = tile;
+    tile.updateTileDiv();
 };
 
 ///GAME
@@ -217,7 +211,6 @@ var Game = function() {
 
 $(document).ready(function() {
   console.log("ready to go!");
-  // Any interactive jQuery functionality
   var game = new Game();
 
   $('body').keydown(function(event){
