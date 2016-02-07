@@ -170,13 +170,14 @@ Board.prototype.processOneTile = function (direction, i, j){
     //keep moving a tile until it hits a wall or different value
     while (next.status != "wallOrDiff") {
       if (next.status == "empty") {
-        //when empty is next, ok to keep going
-        this.shiftTile(current, next);
-        next = current.nextSpot(direction, this);
+        //when next is empty, ok to keep going
+        this.shiftTile(current, next, value);
+        next = current.nextSpot(direction, this, current.val);
       } else if (next.status == "match") {
         //if it's a match, do combine but then break.
         //only allowed to collide once
-        this.shiftTile(current, next);
+        var value = current.val * 2;
+        this.shiftTile(current, next, value);
         break;
       };
     };
@@ -185,21 +186,17 @@ Board.prototype.processOneTile = function (direction, i, j){
 
 Board.prototype.shiftTile = function (tile, next) {
   //updates the tile, the div and the board
-  if (next.status != "wallOrDiff") {
     this.contents[tile.rowNum][tile.colNum] = 0;
     tile.row = next.row;
     tile.col = next.col;
     tile.colNum = Number(tile.col[1]);
     tile.rowNum = Number(tile.row[1]);
-
-    if (next.status == "match") {
-      tile.val = (tile.val * 2);
-      tile.valNum = Number(tile.val);
-    };
-  tile.updateTileDiv();
-  this.contents[tile.rowNum][tile.colNum] = tile;
+    tile.val = (tile.val * 2);
+    tile.valNum = Number(tile.val);
+    tile.updateTileDiv();
+    this.contents[tile.rowNum][tile.colNum] = tile;
   };
-};
+}
 
 ///GAME
 var Game = function() {
