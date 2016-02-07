@@ -69,9 +69,9 @@ var Board = function (array) {
 };
 
 //board updates itself based on movement of tiles
-Board.prototype.update = function (newArray) {
-  this.contents = newArray;
-};
+// Board.prototype.update = function (newArray) {
+//   this.contents = newArray;
+// };
 
 
 Board.prototype.isFull = function () {
@@ -132,54 +132,49 @@ Board.prototype.shiftTile = function (tile, next) {
       "data-col": next.col,
       "data-val": (tile.val * 2)
     });
-    tileDiv.html = tile.val * 2;
+    tileDiv[0].innerHTML = tile.val * 2;
+    this.contents[tile.rowNum][tile.colNum] = 0;
+    this.contents[next.row[1]][next.col[1]] = tile;
   } else if (next.status == "empty") {
     tileDiv.attr({
       "data-row": next.row,
       "data-col": next.col
     });
+    this.contents[tile.rowNum][tile.colNum] = 0;
+    this.contents[next.row[1]][next.col[1]] = tile;
   };
-  this.contents[tile.rowNum][tile.colNum] = 0;
-  this.contents[next.row[1]][next.col[1]] = tile;
 };
+
+Board.prototype.loopTiles = function (direction) {
+  for (var i = 0; i < this.contents.length; i++) {
+    for (var j = 0; j < this.contents[i].length; j++) {
+      var current = this.contents[i][j];
+      if (current != 0) {
+        var next = current.nextSpot(direction, this);
+        this.shiftTile(current, next);
+      };
+    };
+  };
+};
+
+Board.prototype.moveTiles = function (direction) {
+  var allTilesFinished = false;
+  while (allTilesFinished == false) {
+    var oldArray = this.contents;
+    this.loopTiles(direction);
+    var newArray = this.contents;
+    if (oldArray == newArray) {
+      allTilesFinished = true;
+    };
+  };
+};
+
 
 ///GAME
 var Game = function() {
   this.board = new Board([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]);
   this.board.placeRandomTile();
   this.board.placeRandomTile();
-};
-
-Game.prototype.moveTiles = function(direction) {
-  var board = this.board;
-  var boardArray = board.contents;
-
-  var move = function (current, direction, board) {
-    if (current != 0) {
-      var next = current.nextSpot(direction, board);
-      board.shiftTile(current, next);
-    };
-    return board.contents;
-  };
-
-  var loopTiles = function (boardArray) {
-    for (var i = 0; i < boardArray.length; i++) {
-      for (var j = 0; j < boardArray[i].length; j++) {
-        var current = boardArray[i][j];
-        updatedBoardArray = move(current, direction, board);
-      };
-    };
-    return updatedBoardArray;
-  };
-
-  var allTilesFinished = false;
-  while (allTilesFinished == false) {
-    boardArray = loopTiles(boardArray);
-    this.board.contents = boardArray;
-    if (boardArray == loopTiles(loopTiles(boardArray))) {
-      allTilesFinished = true;
-    };
-  };
 };
 
 $(document).ready(function() {
@@ -190,7 +185,7 @@ $(document).ready(function() {
   $('body').keydown(function(event){
     var arrows = [37, 38, 39, 40];
     if (arrows.indexOf(event.which) > -1) {
-      game.moveTiles(event.which);
+      game.board.moveTiles(event.which);
       game.board.placeRandomTile();
     }
   });
