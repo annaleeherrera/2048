@@ -135,6 +135,54 @@ Board.prototype.placeTile = function (tile) {
   gameboard.append(newTile);
 };
 
+Board.prototype.moveTiles = function (direction) {
+  //iterate over board differently for different directions
+  //left or up vs right or down
+  if (direction == 37 || direction == 38) {
+  this.loopTilesForward(direction);
+  } else if (direction == 39 || direction == 40) {
+    this.loopTilesBackward(direction);
+  };
+};
+
+
+Board.prototype.loopTilesForward = function (direction) {
+  for (var i = 0; i < this.contents.length; i++) {
+    for (var j = 0; j < this.contents[i].length; j++) {
+      this.processOneTile(direction, i, j);
+    };
+  };
+};
+
+Board.prototype.loopTilesBackward = function (direction) {
+  for (var i = (this.contents.length-1); i >= 0; i--) {
+    for (var j = (this.contents[i].length-1); j >= 0; j--) {
+      this.processOneTile(direction, i, j);
+    };
+  };
+};
+
+Board.prototype.processOneTile = function (direction, i, j){
+  var current = this.contents[i][j];
+  //only work on spots on board that contain tiles
+  if (current != 0) {
+    var next = current.nextSpot(direction, this);
+    //keep moving a tile until it hits a wall or different value
+    while (next.status != "wallOrDiff") {
+      if (next.status == "empty") {
+        //when empty is next, ok to keep going
+        this.shiftTile(current, next);
+        next = current.nextSpot(direction, this);
+      } else if (next.status == "match") {
+        //if it's a match, do combine but then break.
+        //only allowed to collide once
+        this.shiftTile(current, next);
+        break;
+      };
+    };
+  };
+};
+
 Board.prototype.shiftTile = function (tile, next) {
   //updates the tile, the div and the board
   if (next.status != "wallOrDiff") {
@@ -152,45 +200,6 @@ Board.prototype.shiftTile = function (tile, next) {
   this.contents[tile.rowNum][tile.colNum] = tile;
   };
 };
-
-Board.prototype.loopTiles = function (direction, ) {
-  // for (var i = 0; i < this.contents.length; i++) {
-    // for (var j = 0; j < this.contents[i].length; j++) {
-    for (var i = (this.contents.length-1); i >= 0; i--) {
-      for (var j = (this.contents[i].length-1); j >= 0; j--) {
-      var current = this.contents[i][j];
-      //only work on spots on board that contain tiles
-      if (current != 0) {
-        var next = current.nextSpot(direction, this);
-        //keep moving a tile until it hits a wall or different value
-        while (next.status != "wallOrDiff") {
-          if (next.status == "empty") {
-            //when empty is next, ok to keep going
-            this.shiftTile(current, next);
-            next = current.nextSpot(direction, this);
-          } else if (next.status == "match") {
-            //if it's a match, do combine but then break.
-            //only allowed to collide once
-            this.shiftTile(current, next);
-            break;
-          };
-        };
-      };
-    };
-  };
-};
-
-
-Board.prototype.moveTiles = function (direction) {
-  //iterate over board differently for different directions
-  //left or up vs right or down
-  if (direction == 37 || direction == 38) {
-  this.loopTiles(direction);
-  } else if (direction == 39 || direction == 40) {
-    this.loopTiles();
-  };
-};
-
 
 ///GAME
 var Game = function() {
