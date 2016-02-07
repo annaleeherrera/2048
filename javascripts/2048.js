@@ -62,6 +62,16 @@ Tile.prototype.nextSpot = function (direction, board) {
     };
   };
 
+  Tile.prototype.updateTileDiv = function () {
+    tileDiv = $(".tile[data-id=" + this.id + "]");
+    tileDiv.attr({
+      "data-row": this.row,
+      "data-col": this.col,
+      "data-val": this.val
+    });
+    tileDiv[0].innerHTML = this.val;
+  };
+
 //BOARD
 var Board = function (array) {
   this.tileCounter = 1;
@@ -124,24 +134,20 @@ Board.prototype.placeTile = function (tile) {
 };
 
 Board.prototype.shiftTile = function (tile, next) {
-  tileDiv = $(".tile[data-id=" + tile.id + "]");
-  //updates the div and the board
-  if (next.status == "match") {
-    tileDiv.attr({
-      "data-row": next.row,
-      "data-col": next.col,
-      "data-val": (tile.val * 2)
-    });
-    tileDiv[0].innerHTML = tile.val * 2;
-    this.contents[tile.rowNum][tile.colNum] = 0;
-    this.contents[next.row[1]][next.col[1]] = tile;
-  } else if (next.status == "empty") {
-    tileDiv.attr({
-      "data-row": next.row,
-      "data-col": next.col
-    });
-    this.contents[tile.rowNum][tile.colNum] = 0;
-    this.contents[next.row[1]][next.col[1]] = tile;
+  //updates the tile, the div and the board
+  if (next.status != "wallOrDiff") {
+    tile.row = next.row;
+    tile.col = next.col;
+    tile.colNum = Number(tile.col[1]);
+    tile.rowNum = Number(tile.row[1]);
+
+    if (next.status == "match") {
+      tile.val = (tile.val * 2);
+      tile.valNum = Number(tile.val);
+    };
+  this.contents[tile.rowNum][tile.colNum] = 0;
+  this.contents[next.row[1]][next.col[1]] = tile;
+  tile.updateTileDiv();
   };
 };
 
