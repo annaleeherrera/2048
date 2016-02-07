@@ -124,7 +124,6 @@ Board.prototype.placeTile = function (tile) {
 };
 
 Board.prototype.shiftTile = function (tile, next) {
-  //get div from the tile
   tileDiv = $(".tile[data-id=" + tile.id + "]");
   if (next.status == "match") {
     tileDiv.attr({
@@ -152,7 +151,7 @@ Game.prototype.moveTiles = function(direction) {
   var board = this.board;
   var boardArray = board.contents;
 
-  var chooseAction = function (current, direction, board) {
+  var move = function (current, direction, board) {
     if (current != 0) {
       var next = current.nextSpot(direction, board);
       board.shiftTile(current, next);
@@ -165,7 +164,7 @@ Game.prototype.moveTiles = function(direction) {
     for (var i = 0; i < boardArray.length; i++) {
       for (var j = 0; j < boardArray[i].length; j++) {
         var current = boardArray[i][j];
-        updatedBoardArray = chooseAction(current, direction, board);
+        updatedBoardArray = move(current, direction, board);
       };
     };
     return updatedBoardArray;
