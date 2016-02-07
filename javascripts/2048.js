@@ -127,15 +127,17 @@ Board.prototype.placeRandomTile = function () {
 
 //places a tile onto the board
 //takes tile object as parameter
+//don't immediately show the new tile- do fadein
 Board.prototype.placeTile = function (tile) {
   this.contents[tile.rowNum][tile.colNum]= tile;
   var gameboard= $("#gameboard");
-  gameboard.append('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val=' + tile.val + ' data-id=' + tile.id + ' >'+ tile.valNum + '</div>');
+  var newTile = $('<div class="tile" data-row="' + tile.row + '",' + ' data-col="' + tile.col + '" data-val=' + tile.val + ' data-id=' + tile.id + ' >'+ tile.valNum + '</div>').hide().fadeIn(100);
+  gameboard.append(newTile);
 };
 
 Board.prototype.shiftTile = function (tile, next) {
   //updates the tile, the div and the board
-  if (next.status !== "wallOrDiff") {
+  if (next.status != "wallOrDiff") {
     this.contents[tile.rowNum][tile.colNum] = 0;
     tile.row = next.row;
     tile.col = next.col;
@@ -155,25 +157,30 @@ Board.prototype.loopTiles = function (direction) {
   for (var i = 0; i < this.contents.length; i++) {
     for (var j = 0; j < this.contents[i].length; j++) {
       var current = this.contents[i][j];
+      //only work on spots on board that contain tiles
       if (current != 0) {
         var next = current.nextSpot(direction, this);
-        this.shiftTile(current, next);
+        //keep moving a tile until it hits a wall or different value tile
+        while (next.status != "wallOrDiff") {
+          if (next.status == "empty") {
+            //when empty is next, ok to keep going
+            this.shiftTile(current, next);
+            next = current.nextSpot(direction, this);
+          } else if (next.status == "match") {
+            //if it's a match, do combine but then break.
+            //only allowed to collide once
+            this.shiftTile(current, next);
+            break;
+          };
+        };
       };
     };
   };
 };
 
+
 Board.prototype.moveTiles = function (direction) {
-  var allTilesFinished = false;
-  while (allTilesFinished == false) {
-    var oldArray = this.contents;
     this.loopTiles(direction);
-    this.loopTiles(direction);
-    var newArray = this.contents;
-    if (oldArray == newArray) {
-      allTilesFinished = true;
-    };
-  };
 };
 
 
