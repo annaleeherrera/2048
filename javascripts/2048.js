@@ -83,11 +83,6 @@ var Board = function (array) {
   this.contents = array;
 };
 
-//board updates itself based on movement of tiles
-// Board.prototype.update = function (newArray) {
-//   this.contents = newArray;
-// };
-
 
 Board.prototype.isFull = function () {
   var full = true;
